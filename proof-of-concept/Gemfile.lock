@@ -4,6 +4,7 @@ GEM
     coderay (1.1.0)
     method_source (0.8.2)
     moneta (0.8.0)
+    oj (2.11.4)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -16,5 +17,6 @@ PLATFORMS
 
 DEPENDENCIES
   moneta
+  oj
   pry
   subprocess

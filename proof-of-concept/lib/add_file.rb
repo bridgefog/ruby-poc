@@ -1,13 +1,15 @@
 require 'ipfs'
 
 class AddFile
+  include IPFS
+
   def initialize(config)
     @config = config
     @filename = config.argv[0] or raise ArgumentError.new("Pass filename")
   end
 
   def ipfs
-    @ipfs ||= IPFSClient.new
+    @ipfs ||= Client.new
   end
 
   attr_accessor :filename, :config
