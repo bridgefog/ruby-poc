@@ -1,19 +1,23 @@
 #!/usr/local/bin/ruby -w
 #
 require 'json'
+require 'fileutils'
 
 if ENV.key?('IPFS_PORT_5001_TCP_ADDR')
   ipfs_config_file = File.join(ENV.fetch('IPFS_PATH', "/root/.go-ipfs"), 'config')
+  ipfs_config_file_input = '/app/.go-ipfs/config'
+
   ipfs_host, ipfs_api_port, ipfs_gateway_port =
     ENV.values_at('IPFS_PORT_5001_TCP_ADDR', 'IPFS_PORT_5001_TCP_PORT', 'IPFS_PORT_8080_TCP_PORT')
 
-  config = JSON.load(File.read(ipfs_config_file))
+  config = JSON.load(File.read(ipfs_config_file_input))
 
   config['Addresses'].tap do |a|
     a['API'] = "/ip4/#{ipfs_host}/tcp/#{ipfs_api_port}"
     a['Gateway'] = "/ip4/#{ipfs_host}/tcp/#{ipfs_gateway_port}"
   end
 
+  FileUtils.mkdir_p(File.dirname(ipfs_config_file))
   File.open(ipfs_config_file, 'w') do |f|
     f.puts(JSON.dump(config))
   end
