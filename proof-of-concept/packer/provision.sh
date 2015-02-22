@@ -6,8 +6,20 @@ apt-get update
 apt-get autoremove -y
 # necessary for building ruby from source
 apt-get install -y \
+  autoconf \
+  bison \
   build-essential \
-  libffi-dev
+  libssl-dev \
+  libyaml-dev \
+  libreadline6-dev \
+  zlib1g-dev \
+  libncurses5-dev \
+  libffi-dev \
+  libgdbm3 \
+  libgdbm-dev \
+  libxslt1-dev \
+  libxml2-dev
+
 # necessary for `go get`
 apt-get install -y \
   subversion \
@@ -44,3 +56,7 @@ go install -v github.com/rtlong/ipfs-badge-object-hash
 rbenv install 2.2.0
 rbenv shell 2.2.0
 gem install bundler
+
+# Install jq
+curl -sS http://stedolan.github.io/jq/download/linux64/jq > /usr/bin/jq
+chmod +x /usr/bin/jq
