@@ -1,0 +1,16 @@
+{
+  "builders": [
+    {
+      "type": "digitalocean",
+      "image_id": "10581649",
+      "region" : "sfo1",
+      "snapshot_name": "ceol-{{timestamp}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "provision.sh"
+    }
+  ]
+}
