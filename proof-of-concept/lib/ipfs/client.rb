@@ -116,7 +116,7 @@ module IPFS
       o = DagObject.new(peerlist_as_links)
       peerlist_key = add_object(o)
       toplevel_object = DagObject.new([DagLink.new(peerlist_key, 'peerlist')])
-      toplevel_object_key = add_object(o)
+      toplevel_object_key = add_object(toplevel_object)
       publish!(toplevel_object_key)
     end
 
