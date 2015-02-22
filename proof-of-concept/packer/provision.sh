@@ -4,15 +4,25 @@ set -e -x
 
 apt-get update
 apt-get autoremove -y
-apt-get install -y build-essential subversion mercurial bzr git
+# necessary for building ruby from source
+apt-get install -y \
+  build-essential \
+  libffi-dev
+# necessary for `go get`
+apt-get install -y \
+  subversion \
+  mercurial \
+  bzr \
+  git
 
 docker pull ruby:2.2.0
 docker pull jbenet/go-ipfs
 cid=$(docker create jbenet/go-ipfs:latest)
 docker cp "${cid}:/go/bin/ipfs" /tmp/
 mv /tmp/ipfs /usr/bin/ipfs_from_docker
-docker rm "${cid}" # TODO: double check this bit worked
+docker rm "${cid}"
 
+# install rbenv and ruby-build
 git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
 git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.profile
