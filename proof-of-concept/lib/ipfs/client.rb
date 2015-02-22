@@ -75,6 +75,25 @@ module IPFS
       dht_find_providers(badge_multihash(PARTICIPATION_BADGE))
     end
 
+    def publish!(object_key)
+      response = client.get("name/publish?arg=#{object_key}")
+      handle_response(response.net_http_res).first
+    end
+    alias_method :name_publish, :publish!
+
+    def name_resolve(peerid)
+      response = client.get("name/resolve?arg=#{peerid}")
+      hash = handle_response(response.net_http_res).first
+      hash['Key'] or raise 'Name not found'
+    end
+
+    def retrieve_peers_peerlist(peer_published_key)
+      o = get_object(peer_published_key)
+      peers_link = o.links.detect { |l| l.name == 'peerlist' } or raise 'wtf'
+      peers = get_object(peers_link.hash)
+      peers.links.map(&:hash)
+    end
+
     private
 
     def handle_response(response)
