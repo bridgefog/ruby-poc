@@ -13,7 +13,7 @@ class Configuration
   def parse
     @debug = !!(@argv.delete('--debug') || @argv.delete('-d') || ENV.key?('DEBUG'))
 
-    @api_endpoint = ENV['IPFS_API_ENDPOINT']
+    @api_endpoint = ENV['IPFS_API_ENDPOINT'] || 'http://0.0.0.0:5001/api/v0/'
   end
 
   def storage
