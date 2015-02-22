@@ -5,3 +5,5 @@ gem "moneta"
 gem 'oj'
 
 gem 'subprocess'
+
+gem 'rest-client'

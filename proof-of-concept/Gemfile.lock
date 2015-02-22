@@ -3,12 +3,17 @@ GEM
   specs:
     coderay (1.1.0)
     method_source (0.8.2)
+    mime-types (2.4.3)
     moneta (0.8.0)
+    netrc (0.10.2)
     oj (2.11.4)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    rest-client (1.7.3)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     slop (3.6.0)
     subprocess (1.2.0)
 
@@ -19,4 +24,5 @@ DEPENDENCIES
   moneta
   oj
   pry
+  rest-client
   subprocess

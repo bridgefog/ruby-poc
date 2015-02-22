@@ -1,4 +1,5 @@
-require 'ipfs'
+require 'ipfs/client'
+require 'rest_client'
 
 class AddFile
   include IPFS
@@ -9,7 +10,11 @@ class AddFile
   end
 
   def ipfs
-    @ipfs ||= Client.new
+    @ipfs ||= Client.new(ipfs_api_connection)
+  end
+
+  def ipfs_api_connection
+    @ipfs_api_connection ||= RestClientWrapper.new(config.api_endpoint)
   end
 
   attr_accessor :filename, :config

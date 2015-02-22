@@ -6,12 +6,14 @@ class Config
     parse
   end
 
-  attr_accessor :argv, :debug
+  attr_accessor :argv, :debug, :api_endpoint
 
   alias_method :debug?, :debug
 
   def parse
     @debug = !!(@argv.delete('--debug') || @argv.delete('-d') || ENV.key?('DEBUG'))
+
+    @api_endpoint = ENV['IPFS_API_ENDPOINT']
   end
 
   def storage
