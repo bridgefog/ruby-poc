@@ -4,8 +4,7 @@ require 'json'
 require 'fileutils'
 
 if ENV.key?('IPFS_PORT_5001_TCP_ADDR')
-  ipfs_host, ipfs_api_port, ipfs_gateway_port =
-    ENV.values_at('IPFS_PORT_5001_TCP_ADDR', 'IPFS_PORT_5001_TCP_PORT', 'IPFS_PORT_8080_TCP_PORT')
+  ipfs_host, ipfs_api_port = ENV.values_at('IPFS_PORT_5001_TCP_ADDR', 'IPFS_PORT_5001_TCP_PORT')
 
   ENV['IPFS_API_ENDPOINT'] = "http://#{ipfs_host}:#{ipfs_api_port}/api/v0/"
 end
