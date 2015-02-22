@@ -1,4 +1,5 @@
 require 'base64'
+require 'set'
 require 'oj'
 require 'ipfs/dag'
 
@@ -15,15 +16,16 @@ module IPFS
 
     def initialize(client)
       @client = client
+      @peerlist = Set.new
     end
-    attr_reader :client
+    attr_reader :client, :peerlist
 
     def add_object(object)
       file = JSONFile.new(object)
       p object: file.string
       response = client.post('object/put?arg=json', data: file)
 
-      handle_response(response.net_http_res)
+      handle_response(response.net_http_res).first.fetch('Hash')
     end
 
     def get_object(key)
@@ -72,7 +74,7 @@ module IPFS
     end
 
     def find_participating_peers
-      dht_find_providers(badge_multihash(PARTICIPATION_BADGE))
+      peerlist.merge dht_find_providers(badge_multihash(PARTICIPATION_BADGE))
     end
 
     def publish!(object_key)
@@ -87,11 +89,35 @@ module IPFS
       hash['Key'] or raise 'Name not found'
     end
 
-    def retrieve_peers_peerlist(peer_published_key)
-      o = get_object(peer_published_key)
+    def retrieve_peers_peerlist(peerid)
+      key = name_resolve(peerid)
+      o = get_object(key)
       peers_link = o.links.detect { |l| l.name == 'peerlist' } or raise 'wtf'
       peers = get_object(peers_link.hash)
       peers.links.map(&:hash)
+    end
+
+    def get_peers_peers
+      peerlist.each do |peerid|
+        warn "Getting peerlist for #{peerid}"
+        begin
+          this_peers_peerlist = retrieve_peers_peerlist(peerid)
+          p new_peers: this_peers_peerlist
+          peerlist.merge(this_peers_peerlist)
+        rescue => ex
+          warn ex.to_s
+          next
+        end
+      end
+    end
+
+    def publish_peerlist
+      peerlist_as_links = peerlist.map { |pid| DagLink.new(pid) }
+      o = DagObject.new(peerlist_as_links)
+      peerlist_key = add_object(o)
+      toplevel_object = DagObject.new([DagLink.new(peerlist_key, 'peerlist')])
+      toplevel_object_key = add_object(o)
+      publish!(toplevel_object_key)
     end
 
     private
