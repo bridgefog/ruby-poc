@@ -91,9 +91,7 @@ module IPFS
 
     def retrieve_peers_peerlist(peerid)
       key = name_resolve(peerid)
-      o = get_object(key)
-      peers_link = o.links.detect { |l| l.name == 'peerlist' } or raise 'wtf'
-      peers = get_object(peers_link.hash)
+      peers = get_object(key + "/peerlist")
       peers.links.map(&:hash)
     end
 
