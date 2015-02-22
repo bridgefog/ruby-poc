@@ -12,3 +12,9 @@ docker rm $cid
 docker run --rm -it -v $PWD:/app -w /app --link=ipfs-daemon:ipfs ceol bash
  > bin/ceol-add Gemfile
 ```
+
+## Some Notes
+
+In the `bin/` directory, there's a compiled `linux_amd64` binary called `ipfs-badge-object-hash`; this is the built binary from this project: <https://github.com/rtlong/ipfs-badge-object-hash>
+
+`bin/ceol-add` is the best entry point, currently
