@@ -5,10 +5,10 @@ require 'bundler/setup'
 Bundler.require
 
 $:.unshift(File.expand_path('../../lib', __FILE__))
-require 'config'
+require 'configuration'
 require 'add_file'
 
-config = Config.new(ARGV)
+config = Configuration.new(ARGV)
 
 at_exit { config.storage.close }
 

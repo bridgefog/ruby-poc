@@ -1,6 +1,6 @@
 require 'moneta'
 
-class Config
+class Configuration
   def initialize(argv)
     @argv = argv
     parse
