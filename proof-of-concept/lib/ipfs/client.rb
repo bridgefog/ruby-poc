@@ -3,6 +3,8 @@ require 'oj'
 require 'ipfs/dag'
 
 module IPFS
+  PARTICIPATION_BADGE = "__WOOT__"
+
   class Client
     # Add a file at `filename` and return the key
     def add(filename, recursive: false)
@@ -63,6 +65,14 @@ module IPFS
     def badge_multihash(key)
       string = badge_string(key)
       Subprocess.check_output(['bin/ipfs-badge-object-hash', string]).chomp
+    end
+
+    def publish_participation_badge
+      publish_badge(PARTICIPATION_BADGE)
+    end
+
+    def find_participating_peers
+      dht_find_providers(badge_multihash(PARTICIPATION_BADGE))
     end
 
     private
